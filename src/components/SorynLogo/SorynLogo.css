@@ -1,0 +1,113 @@
+/* ------------------------------------------------------------------
+   Soryn logo
+   --soryn-h = height of the symbol; the wordmark scales from it.
+   Only transform + opacity are animated, so it stays off the main thread
+   and costs next to nothing.
+------------------------------------------------------------------- */
+
+.soryn-logo {
+  --soryn-h: 40px;
+  --soryn-ink: #f1e4cb;
+
+  display: inline-flex;
+  align-items: flex-start;
+  gap: calc(var(--soryn-h) * 0.2);
+  line-height: 0;
+  color: var(--soryn-ink);
+  user-select: none;
+}
+
+.soryn-mark {
+  flex: none;
+  width: var(--soryn-h);
+  height: var(--soryn-h);
+  overflow: visible; /* lets the soft glow bleed past the 64 x 64 box */
+}
+
+.soryn-wordmark {
+  flex: none;
+  /* cap height = 0.4 x symbol height; baseline lines up just under the V's centre */
+  width: calc(var(--soryn-h) * 1.346);
+  height: calc(var(--soryn-h) * 0.5408);
+  margin-top: calc(var(--soryn-h) * 0.313);
+}
+
+/* Compact, symbol-only version for narrow screens */
+@media (max-width: 480px) {
+  .soryn-logo--responsive .soryn-wordmark {
+    display: none;
+  }
+}
+
+/* ---- Animation ---------------------------------------------------
+   The base (un-animated) state is the finished logo. Keyframes only
+   describe how it gets there, so removing the animation never leaves
+   the logo half-drawn.
+
+   Timeline:
+     0.0s  glow fades in
+     0.5s  sun starts rising from behind the V (to ~3.3s)
+     3.4s  first light sweep across the V, then every 8s
+     1.4s+ glow breathes, 6s per cycle
+------------------------------------------------------------------- */
+
+.soryn-mark[data-animated='true'] .sm-glow-in {
+  animation: sm-glow-in 1.4s ease-out both;
+}
+
+.soryn-mark[data-animated='true'] .sm-glow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sm-breathe 6s ease-in-out 1.4s infinite alternate;
+}
+
+.soryn-mark[data-animated='true'] .sm-sun {
+  animation: sm-rise 2.8s cubic-bezier(0.22, 0.8, 0.24, 1) 0.5s both;
+}
+
+.soryn-mark[data-animated='true'] .sm-sweep {
+  opacity: 0;
+  animation: sm-sweep 8s ease-in-out 3.4s infinite;
+}
+
+/* No sweep in the resting state */
+.soryn-mark:not([data-animated='true']) .sm-sweep {
+  display: none;
+}
+
+@keyframes sm-glow-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes sm-breathe {
+  from { opacity: 1;    transform: scale(1); }
+  to   { opacity: 0.62; transform: scale(1.1); }
+}
+
+@keyframes sm-rise {
+  from { transform: translateY(22px); }
+  to   { transform: translateY(0); }
+}
+
+@keyframes sm-sweep {
+  0%   { opacity: 0; transform: translateX(-6px); }
+  3%   { opacity: 1; }
+  17%  { opacity: 1; }
+  20%  { opacity: 0; transform: translateX(72px); }
+  100% { opacity: 0; transform: translateX(72px); }
+}
+
+/* Reduced motion: show the finished logo, no movement at all */
+@media (prefers-reduced-motion: reduce) {
+  .soryn-mark .sm-glow-in,
+  .soryn-mark .sm-glow,
+  .soryn-mark .sm-sun,
+  .soryn-mark .sm-sweep {
+    animation: none !important;
+  }
+
+  .soryn-mark .sm-sweep {
+    display: none;
+  }
+}

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Soryn — Video &amp; audio toolkit</title>
+    <meta
+      name="description"
+      content="Soryn is a privacy-conscious video and audio toolkit with permission-first guidance. Link checking runs in your browser."
+    />
+    <meta name="theme-color" content="#0e0d0c" />
+    <meta property="og:title" content="Soryn — Video &amp; audio toolkit" />
+    <meta
+      property="og:description"
+      content="A privacy-conscious video and audio toolkit. Developed by Vaishnav Sai."
+    />
+    <meta property="og:type" content="website" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!--
+      Loading state: shown by the browser before React has mounted, and replaced
+      automatically when React renders into #root. Same V + sun as the header
+      logo (src/components/SorynLogo), as plain markup so it needs no JS.
+      Keep the geometry in sync with SorynLogo.tsx.
+    -->
+    <style>
+      html, body { margin: 0; background: #0e0d0c; }
+      .boot {
+        min-height: 100vh; min-height: 100svh;
+        display: grid; place-items: center; align-content: center; gap: 18px;
+        color: #8f887d; font: 500 12px/1 system-ui, -apple-system, sans-serif;
+        letter-spacing: 0.22em; text-transform: uppercase;
+      }
+      .boot svg { width: 72px; height: 72px; overflow: visible; }
+      .boot .b-glow { transform-box: fill-box; transform-origin: center; animation: b-breathe 3.2s ease-in-out infinite alternate; }
+      .boot .b-sun  { animation: b-rise 2.4s cubic-bezier(0.22, 0.8, 0.24, 1) both; }
+      @keyframes b-breathe { from { opacity: 1; transform: scale(1); } to { opacity: .62; transform: scale(1.1); } }
+      @keyframes b-rise { from { transform: translateY(22px); } to { transform: translateY(0); } }
+      @media (prefers-reduced-motion: reduce) { .boot .b-glow, .boot .b-sun { animation: none; } }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="boot" role="status" aria-live="polite">
+        <svg viewBox="0 0 64 64" role="img" aria-label="Soryn">
+          <defs>
+            <linearGradient id="b-v" x1="0" y1="12" x2="0" y2="60" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#F3E2BC" /><stop offset=".55" stop-color="#D2A455" /><stop offset="1" stop-color="#9E6B34" />
+            </linearGradient>
+            <linearGradient id="b-sun" x1="0" y1="12" x2="0" y2="30" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#F8CB78" /><stop offset=".5" stop-color="#F09A42" /><stop offset="1" stop-color="#D9572B" />
+            </linearGradient>
+            <radialGradient id="b-glow" cx="32" cy="21" r="26" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#F2A24E" stop-opacity=".75" /><stop offset=".45" stop-color="#E0743A" stop-opacity=".22" /><stop offset="1" stop-color="#E0743A" stop-opacity="0" />
+            </radialGradient>
+            <clipPath id="b-sky"><rect x="-12" y="-12" width="88" height="52" /></clipPath>
+          </defs>
+          <circle class="b-glow" cx="32" cy="21" r="26" fill="url(#b-glow)" />
+          <g clip-path="url(#b-sky)"><circle class="b-sun" cx="32" cy="21" r="8.5" fill="url(#b-sun)" /></g>
+          <polygon points="6,12 19,12 32,36 45,12 58,12 32,60" fill="url(#b-v)" />
+        </svg>
+        <span>Loading</span>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
